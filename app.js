@@ -4,17 +4,16 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const _=require("lodash");
-const dotenv= require("dotenv");
-
+const dotenv=require("dotenv");
+dotenv.config({path:'config.env'});
 const app = express();
 
-dotenv.config({path:"./config.env"});
+const DB=process.env.DATABASE;
 
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
-const DB=process.env.DATABASE;
 mongoose.connect(DB);
 
 const itemsSchema= {
@@ -45,8 +44,6 @@ const listSchema={
 }
 
 const List= mongoose.model("List",listSchema);
-
-
 
 app.get("/", function(req, res) {
   Item.find({}, function (err, docs) {
