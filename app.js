@@ -121,16 +121,31 @@ app.post("/", function(req, res){
   });
   if(listName==="Today")
   {
-    item.save();
-    res.redirect("/");
+    item.save(function(err)
+  {
+    if(!err)
+    {
+        res.redirect("/");
+    }
+  });
+
   }
   else
   {
     List.findOne({name:listName},function(err,doc)
   {
+    if(!err)
+    {
     doc.items.push(item);
-    doc.save();
-    res.redirect("/"+listName);
+    doc.save(function(err)
+  {
+    if(!err)
+    {
+      res.redirect("/"+listName);
+    }
+  });
+
+  }
   });
   }
 
